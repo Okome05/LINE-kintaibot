@@ -17,4 +17,12 @@ LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一�
 ##### MessagingAPIの項目から　Channel access tokenの情報を取得（黄色で塗りつぶした部分をコピーしておく）
 ![スクリーンショット 2023-04-07 190740](https://user-images.githubusercontent.com/130141399/230590813-c03c9b08-683e-4703-858d-df475ad6ed6f.png)
 
+###  Pythonでコードを書く
+#### PythonSDKを参考に実際に書いてみる！
+[line-bot-sdk-python](https://github.com/line/line-bot-sdk-python)のgithubを参考にさせていただきました．  
+そのままコピペしてそこに追加していく形で作成  
+
+
+### Raspberry Piの設定
+#### 
 
