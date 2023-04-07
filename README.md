@@ -40,7 +40,7 @@ global start_time　メッセージの返信に使用するのでグローバル
 global end_time,Research_time,total_time　これらはメッセージの返信に使用するのでグローバル変数としている
 
 ### LINEBotに関する設定部分
-この部分に先ほどコピーしたIDなどを入力する
+この部分に先ほどコピーしたIDなどを入力する  
 ![スクリーンショット 2023-04-07 193215](https://user-images.githubusercontent.com/130141399/230597376-9e29a18a-b8ad-410b-b1a5-3e59ad9aa620.png)
 
 ### 指定のメッセージを受け取ったときの処理
