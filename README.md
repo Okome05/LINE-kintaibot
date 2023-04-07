@@ -50,7 +50,8 @@ global end_time,Research_time,total_time　これらはメッセージの返信�
 ![スクリーンショット 2023-04-07 195416](https://user-images.githubusercontent.com/130141399/230597132-8b56c3b5-988f-4814-bfa7-72a427e37493.png)
 
 ## Raspberry Piの設定
-### 
+### ngrokを使用してローカルURLに転送してもらう
+#### [ngrok](https://ngrok.com/)にアクセスしサインインを行う
 
 
 
