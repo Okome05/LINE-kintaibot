@@ -1,5 +1,6 @@
 # LINE-kintaibot
+## 研究時間をLINEボットを使って管理したい
 
-##研究時間をLINEボットを使って管理したい
+## LINEBotのMessagingAPIを使って実装を行う
+### LINEBotの作成
 
-##LINEBotのMessagingAPIを使って実装を行う
