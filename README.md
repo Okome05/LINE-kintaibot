@@ -1,6 +1,7 @@
 # LINEBotで研究時間を管理
 LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一日の研究時間とこれまでの累計時間を記録する．
 ### LINEBot×Python×Raspberry Pi×ngrokを使って実装を行う
+![Screenshot_20230407-195847](https://user-images.githubusercontent.com/130141399/230597938-7e1cedc9-e477-408a-8055-0bc457df52da.png)
 
 ## LINEBotの作成
 ### ビジネスアカウントを作成する
