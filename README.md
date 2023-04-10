@@ -18,7 +18,7 @@ LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一�
 ![スクリーンショット 2023-04-07 182441](https://user-images.githubusercontent.com/130141399/230583693-8baeb486-9372-418f-9d76-e6fbb0668512.png)
 ### 新規チャンネルの作成
 新規でMessaging APIのチャンネルを新規作成する
-![スクリーンショット 2023-04-07 185051](https://user-images.githubusercontent.com/130141399/230587893-362e5352-c44f-4a03-a34c-60be49c27417.png)
+![スクリーンショット 2023-04-07 185051](https://user-images.githubusercontent.com/130141399/230587893-362e5352-c44f-4a03-a34c-60be49c27417.png)  
 この先は指示に従って作成してください
 ### 必要情報の確認　（この後認証のために使用する）
 #### Basic settingの項目から Channel secretの情報取得（黄色で塗りつぶした部分をコピーしておく）
@@ -183,7 +183,7 @@ ngrok authtoken コピーした部分
 ngrok http 5000
 ```  
 
-*ここはngrokでポート開放するたびにURLが変わってしまうのでポート開放を止めるとLINEBot側の設定をし直す必要があるので注意!!
+*ここはngrokでポート開放するたびにURLが変わってしまうのでポート開放を止めるとLINEBot側の設定をし直す必要があるので注意!!  
 公開するとStatusがonlineと表示される．  
 黄色で塗りつぶした部分をLINEBotに紐づけするためコピーしておく
 ![ngrok](https://user-images.githubusercontent.com/130141399/230872542-c68b7693-cd00-40ef-a482-3621639084ab.png)
