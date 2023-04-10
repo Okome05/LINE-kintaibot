@@ -26,7 +26,6 @@ LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一�
 
 ### 新規アクセスしたユーザーにはファイルを新規作成する
 関数内の処理内容としてはパス内にLineのユーザーIDを含んだファイルが存在するか確認し，ない場合は新規作成・ある場合は何も行わない
-![スクリーンショット 2023-04-07 193628](https://user-images.githubusercontent.com/130141399/230594918-89d92fb9-2c0f-4dc8-8349-fbd40814ea61.png)
 ```python
 #ファイルの存在確認（任意のファイルが存在しなければ作成を行う！）
 def file_create():
@@ -42,19 +41,80 @@ def file_create():
 
 ### 研究を開始したときの処理関数
 開始処理を行ったときの時刻をdatetime.nowで取得し，対象のセル位置に打刻する  
-連続で開始処理が行われると正常に動かないので条件分岐をつけている
-![スクリーンショット 2023-04-07 194115](https://user-images.githubusercontent.com/130141399/230595271-06ee964d-1f6f-4b5b-af4d-0c643b817807.png)
-global start_time　メッセージの返信に使用するのでグローバル変数としている
+連続で開始処理が行われると正常に動かないので連続打刻防止の条件分岐をつけている
+*global start_time　メッセージの返信に使用するのでグローバル変数としている
+```python
+#開始時の処理
+def punch_in():
+    global start_time
+    df = pd.read_csv(user_id + '.csv',header = None)
+    timestamp = datetime.now().replace(second=0,microsecond=0)
+    date = timestamp.strftime('%Y/%m/%d') #日付
+    start_time = timestamp.strftime('%H:%M') #開始時刻
+    
+    '''連続で研究開始が打刻されたときの例外処理的なもの'''
+    if df.iloc[-1, 2] == 0 or df.iloc[-1, 2] =='終了時刻':
+        pass
+    else:  
+        new_row = {'日付':0,'開始時刻':0,'終了時刻':0,'今日の研究時間':0,'累計研究時間':0}
+        df.loc[len(df)] = new_row
+        df.iloc[-1, 0] = date
+        df.iloc[-1, 1] = start_time
+        #df = df.append({'日付':date,'開始時刻':punch_in,'終了時刻':0,'今日の研究時間':0,'累計研究時間':0},ignore_index=True) #なぜかdf.append使えなかった；；
+        df.to_csv(user_id + '.csv',index= False,header=False)
+```
 
 ### 研究を終了したときの処理関数
 終了処理を行ったときの時刻をdatetime.nowで取得し，対象のセル位置に打刻する  
 開始時刻と終了時刻から１日の研究時間の算出，前回の累積時間から新たな合計研究時間を算出し，対象のセル位置に打刻を行う
-![スクリーンショット 2023-04-07 194422](https://user-images.githubusercontent.com/130141399/230595701-13513236-b8a5-4942-a81c-295bb88350de.png)
-global end_time,Research_time,total_time　これらはメッセージの返信に使用するのでグローバル変数としている
+*global end_time,Research_time,total_time　これらはメッセージの返信に使用するのでグローバル変数としている
+
+```python
+#終了時の処理
+def punch_out():
+    global end_time,Research_time,total_time
+    df = pd.read_csv(user_id + '.csv',header = None)
+    timestamp = datetime.now().replace(second=0,microsecond=0)
+    end_time = timestamp.strftime('%H:%M') #終了時刻
+    
+    '''今日の研究時間と累計研究時間の計算'''
+    time1 = df.iloc[-1, 1] #開始時刻をdfから取り出し(毎回保存しないと複数人に対応できなさそうだったので)
+    print(time1)
+    Research_time = ((datetime.strptime(end_time,'%H:%M')) - (datetime.strptime(time1,'%H:%M'))) #研究時間
+    #timedeltaオブジェクトから時間・分を取得する
+    hours, remainder = divmod(Research_time.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    minutes = minutes / 60
+    Research_time = f"{hours + minutes:.2f}"
+
+    last_index = len(df) - 1 #最終行のインデックス取得
+    last_time = df.iloc[last_index - 1,4] #前回の累計時間
+    if  last_time == '累計研究時間': #1回目の例外処理
+        total_time = float(Research_time)
+        total_time = f"{total_time:.2f}"
+    else:
+        total_time = float(Research_time) + float(last_time)
+        total_time = f"{total_time:.2f}"
+            
+    df.iloc[-1, 2] = end_time
+    df.iloc[-1, 3] = Research_time
+    df.iloc[-1, 4] = total_time
+    df.to_csv(user_id + '.csv',index= False,header=False)
+```
 
 ### LINEBotに関する設定部分
 この部分に先ほどコピーしたIDなどを入力する  
-![スクリーンショット 2023-04-07 193215](https://user-images.githubusercontent.com/130141399/230597376-9e29a18a-b8ad-410b-b1a5-3e59ad9aa620.png)
+
+```python
+#ここからラインボットの設定関係
+app = Flask(__name__)
+
+YOUR_CHANNEL_ACCESS_TOKEN = '#自分のCHANNEL_ACCESS_TOKEN'
+YOUR_CHANNEL_SECRET = '#自分のCHANNEL_SECRET'
+
+line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(YOUR_CHANNEL_SECRET)
+```
 
 ### 指定のメッセージを受け取ったときの処理
 ここではメッセージを受け取った際にプロフィール情報を取得している
