@@ -1,5 +1,14 @@
 # LINEBotで研究時間を管理
 LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一日の研究時間とこれまでの累計時間を記録する．
+## 動作するときのイメージ
+- 常時ラズパイ上でpythonプログラムが動作している
+- この時Flaskを使ってWebフレームワークが動作している
+- LINEBotで特定のメッセージを受け取ったときにcsvに打刻する
+- LINEBotからのイベント受け取りはWebhookにより指定したWebサーバーに送信する
+- ラズパイはローカルサーバー上で動作しているのでngrokを使って外部サーバーから受け取っている
+- 指定されたWebサーバーからのイベントでpythonを制御して色々する
+
+
 ### LINEBot×Python×Raspberry Pi×ngrokを使って実装を行う
 ![Screenshot_20230407-195847](https://user-images.githubusercontent.com/130141399/230598056-f77d095f-1845-434e-90e2-8289858d7b01.png)
 
@@ -41,7 +50,7 @@ def file_create():
 
 ### 研究を開始したときの処理関数
 開始処理を行ったときの時刻をdatetime.nowで取得し，対象のセル位置に打刻する  
-連続で開始処理が行われると正常に動かないので連続打刻防止の条件分岐をつけている
+連続で開始処理が行われると正常に動かないので連続打刻防止の条件分岐をつけている  
 *global start_time　メッセージの返信に使用するのでグローバル変数としている
 ```python
 #開始時の処理
@@ -66,7 +75,7 @@ def punch_in():
 
 ### 研究を終了したときの処理関数
 終了処理を行ったときの時刻をdatetime.nowで取得し，対象のセル位置に打刻する  
-開始時刻と終了時刻から１日の研究時間の算出，前回の累積時間から新たな合計研究時間を算出し，対象のセル位置に打刻を行う
+開始時刻と終了時刻から１日の研究時間の算出，前回の累積時間から新たな合計研究時間を算出し，対象のセル位置に打刻を行う  
 *global end_time,Research_time,total_time　これらはメッセージの返信に使用するのでグローバル変数としている
 
 ```python
@@ -172,7 +181,8 @@ ngrok authtoken コピーした部分
 ポート5000でポート公開をする
 ```
 ngrok http 5000
-```
+```  
+
 *ここはngrokでポート開放するたびにURLが変わってしまうのでポート開放を止めるとLINEBot側の設定をし直す必要があるので注意!!
 公開するとStatusがonlineと表示される．  
 黄色で塗りつぶした部分をLINEBotに紐づけするためコピーしておく
@@ -180,7 +190,7 @@ ngrok http 5000
 
 ## LINEBot側のWebhook settings項目を設定する
 Webhook URLの部分にURLをペーストする
-![ngrok](https://user-images.githubusercontent.com/130141399/230873369-f093badd-d547-48ae-8926-3b2fef8d6ca5.png)
+![ngrok](https://user-images.githubusercontent.com/130141399/230873369-f093badd-d547-48ae-8926-3b2fef8d6ca5.png)  
 *ただペーストするだけではなくngrok.io/callbackにする必要があります
 
 ### ここでLINEBotが動くかテストする
