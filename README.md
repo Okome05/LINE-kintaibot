@@ -27,6 +27,18 @@ LINEBotのMessagingAPIを使って研究開始と研究終了を記録し，一�
 ### 新規アクセスしたユーザーにはファイルを新規作成する
 関数内の処理内容としてはパス内にLineのユーザーIDを含んだファイルが存在するか確認し，ない場合は新規作成・ある場合は何も行わない
 ![スクリーンショット 2023-04-07 193628](https://user-images.githubusercontent.com/130141399/230594918-89d92fb9-2c0f-4dc8-8349-fbd40814ea61.png)
+```python
+#ファイルの存在確認（任意のファイルが存在しなければ作成を行う！）
+def file_create():
+    '''ファイルが存在する場合'''
+    if os.path.exists("./" + user_id + ".csv"):
+        pass
+    else:
+        with open(user_id + '.csv','w') as csv_file:
+            fieldnames = ['日付','開始時刻','終了時刻','今日の研究時間','累計研究時間']
+            writer = csv.DictWriter(csv_file, fieldnames = fieldnames)
+            writer.writeheader()
+```
 
 ### 研究を開始したときの処理関数
 開始処理を行ったときの時刻をdatetime.nowで取得し，対象のセル位置に打刻する  
