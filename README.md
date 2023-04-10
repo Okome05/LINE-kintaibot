@@ -56,34 +56,41 @@ global end_time,Research_time,total_time　これらはメッセージの返信�
 
 #### Raspberry Piにngrokをインストールする
 ラズパイのLXTerminal上で以下のコマンドを使ってzipファイルをダウンロードする
-'''
+```
 wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
-'''
+```
 インストールしたzipファイルをunzipを使いlocal/bin/のディレクトリ下に解凍する
-'''
+```
 sudo unzip ngrok-stable-linux-arm.zip -d /usr/local/bin/
-'''
+```
 黄色で塗りつぶした部分をコピーし以下のコマンドをラズパイのターミナル上で入力する
 ![スクリーンショット 2023-04-10 180014](https://user-images.githubusercontent.com/130141399/230869931-a0d067cd-d186-4c23-815d-08a7f1653c81.png)
-'''
+```
 ngrok authtoken コピーした部分
-'''
+```
 ポート5000でポート公開をする
-'''
+```
 ngrok http 5000
-'''
+```
+*ここはngrokでポート開放するたびにURLが変わってしまうのでポート開放を止めるとLINEBot側の設定をし直す必要があるので注意!!
 公開するとStatusがonlineと表示される．  
 黄色で塗りつぶした部分をLINEBotに紐づけするためコピーしておく
 ![ngrok](https://user-images.githubusercontent.com/130141399/230872542-c68b7693-cd00-40ef-a482-3621639084ab.png)
 
-##LINEBot側のWebhook settings項目を設定する
+## LINEBot側のWebhook settings項目を設定する
 Webhook URLの部分にURLをペーストする
 ![ngrok](https://user-images.githubusercontent.com/130141399/230873369-f093badd-d547-48ae-8926-3b2fef8d6ca5.png)
 *ただペーストするだけではなくngrok.io/callbackにする必要があります
 
+### ここでLINEBotが動くかテストする
+dousatest.pyをラズパイ上でrunしておく
+*LINEbotの設定項目を変更する(チャンネルトークンとチャンネルシークレットの設定)  
+
 /callbackがついてないURLをWeb検索すると
+これはテストです．と表示されれば問題なく動いている
 
-
+## ここまで問題なければ
+kintaibot.pyをラズパイ上で動かしておき，紐づけしたLINEBotにメッセージを入力してCSVファイルが問題なく書き込まれればOK!
 
 
 
