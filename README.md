@@ -119,7 +119,36 @@ handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 ### 指定のメッセージを受け取ったときの処理
 ここではメッセージを受け取った際にプロフィール情報を取得している
 画像のように研究開始！と研究終了！のメッセージに対して記録や返信を行うように設定している
-![スクリーンショット 2023-04-07 195416](https://user-images.githubusercontent.com/130141399/230597132-8b56c3b5-988f-4814-bfa7-72a427e37493.png)
+
+```python
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event): 
+    global user_disp_name,user_id
+    
+    profile = line_bot_api.get_profile(event.source.user_id)
+    user_id = event.source.user_id #ユーザID
+    user_disp_name = profile.display_name #アカウント名
+    
+    if event.message.text =='研究開始！':
+        file_create() #ファイルの存在確認
+        punch_in() #開始時の処理
+        '''csvから開始時刻を呼び出してメッセージを送る'''
+        #df = pd.read_csv(user_id + '.csv',header = None)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = '{}さん今日も頑張りましょう！\n研究開始時刻 : {}'.format(user_disp_name,start_time)))
+            
+    elif event.message.text =='研究終了！':
+        file_create() #ファイルの存在確認
+        punch_out() #終了時の処理
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = '{}さん今日一日お疲れ様でした！\n研究終了時刻 : {}です。\n今回の研究時間 : {}時間\n累計研究時間 : {}時間'.format(user_disp_name,end_time,Research_time,total_time)))
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = '私は研究時間を管理するBotです。'))
+```
 
 ## Raspberry Piの設定
 ### ngrokを使用してローカルURLに外部からローカルサーバーに転送してもらう
