@@ -70,7 +70,7 @@ def punch_in():
         df.iloc[-1, 0] = date
         df.iloc[-1, 1] = start_time
         df.iloc[-1, 1] = '0'
-        #df = df.append({'日付':date,'開始時刻':punch_in,'終了時刻':0,'今日の研究時間':0,'累計研究時間':0},ignore_index=True) #なぜかdf.append使えなかった；；
+        #df = df.append({'日付':date,'開始時刻':punch_in,'終了時刻':'0','今日の研究時間':'0','累計研究時間':'0'},ignore_index=True) #なぜかdf.append使えなかった；；
         df.to_csv(user_id + '.csv',index= False,header=False)
 ```
 
