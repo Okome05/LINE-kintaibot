@@ -62,13 +62,14 @@ def punch_in():
     start_time = timestamp.strftime('%H:%M') #開始時刻
     
     '''連続で研究開始が打刻されたときの例外処理的なもの'''
-    if df.iloc[-1, 2] == nan or df.iloc[-1, 2] =='終了時刻':
+    if df.iloc[-1, 2] == '0' or df.iloc[-1, 2] =='終了時刻':
         pass
     else:  
         new_row = {'日付':0,'開始時刻':0,'終了時刻':0,'今日の研究時間':0,'累計研究時間':0}
         df.loc[len(df)] = new_row
         df.iloc[-1, 0] = date
         df.iloc[-1, 1] = start_time
+        df.iloc[-1, 1] = '0'
         #df = df.append({'日付':date,'開始時刻':punch_in,'終了時刻':0,'今日の研究時間':0,'累計研究時間':0},ignore_index=True) #なぜかdf.append使えなかった；；
         df.to_csv(user_id + '.csv',index= False,header=False)
 ```
